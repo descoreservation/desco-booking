@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from './_lib/supabase.js';
+import { getSupabase } from './_lib/supabase.js';
 import { encryptBookingPII, decryptBookingPII } from './_lib/crypto.js';
 
 export default async function handler(req, res) {
@@ -51,8 +51,8 @@ export default async function handler(req, res) {
         // Encrypt PII
         const encrypted = encryptBookingPII(payload);
 
-        // Insert via service role (bypasses RLS)
-        const supabase = getSupabaseAdmin();
+        // Insert via anon key (RLS allows public insert on bookings)
+        const supabase = getSupabase();
         const { data, error } = await supabase
             .from('bookings')
             .insert([encrypted])
