@@ -325,7 +325,7 @@ function renderPartySizeStep(content) {
     });
 
     document.getElementById('btn-large-party').addEventListener('click', () => {
-        openWhatsApp(settings, "Hi, I'd like to book for a large party (7+ guests).");
+        openWhatsApp(settings, 'Hi, I'd like to book for a large party (7+ guests).');
     });
 }
 
@@ -472,7 +472,10 @@ async function renderTimeSlotStep(content) {
 }
 
 function renderWalkinTimePreference(content, svc) {
-    const slots = generateTimeSlots(svc.start_time, svc.end_time, svc.slot_interval_minutes || 30);
+    console.log('Walk-in service data:', JSON.stringify(svc));
+    const interval = svc.slot_interval_minutes || svc.slot_interval || 30;
+    const slots = generateTimeSlots(svc.start_time, svc.end_time, interval);
+    console.log('Generated slots:', slots);
 
     content.innerHTML = `
         <div class="animate-fade-in">
