@@ -36,29 +36,29 @@ export async function renderBooking(container) {
 }
 
 function renderStep(container) {
-    const sectionLabel = bookingState.section === 'dining' ? 'Dining Table' : 'Walk-in Lounge';
+    const sectionLabel = bookingState.section === 'dining' ? 'Dining Table' : 'Drink Lounge';
     const totalSteps = bookingState.section === 'dining' ? 6 : 6;
     const progress = ((step + 1) / totalSteps) * 100;
 
     container.innerHTML = `
-        <div class="min-h-screen flex flex-col bg-[#f5f5f3]">
+        <div class="min-h-screen flex flex-col bg-[#0E0E0E]">
             
             <!-- Header -->
-            <header class="sticky top-0 z-40 bg-[#f5f5f3]/90 backdrop-blur-md border-b border-[#e8e8e6]">
+            <header class="sticky top-0 z-40 bg-[#0E0E0E]/90 backdrop-blur-md border-b border-[#222]">
                 <div class="max-w-lg mx-auto px-6 py-4 flex items-center justify-between">
-                    <button id="btn-back" class="w-10 h-10 -ml-2 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <button id="btn-back" class="w-10 h-10 -ml-2 flex items-center justify-center rounded-full hover:bg-[#1a1a1a]/5 transition-colors">
+                        <svg class="w-5 h-5 text-[#666]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                         </svg>
                     </button>
                     <div class="text-center">
-                        <p class="text-xs text-[#999] tracking-widest uppercase">${sectionLabel}</p>
+                        <p class="text-xs text-[#666] tracking-widest uppercase">${sectionLabel}</p>
                     </div>
                     <div class="w-10"></div>
                 </div>
                 <!-- Progress bar -->
-                <div class="h-[2px] bg-[#e8e8e6]">
-                    <div class="h-full bg-[#1a1a1a] transition-all duration-500 ease-out" style="width: ${progress}%"></div>
+                <div class="h-[2px] bg-[#222]">
+                    <div class="h-full bg-[#f5f5f5] transition-all duration-500 ease-out" style="width: ${progress}%"></div>
                 </div>
             </header>
 
@@ -127,13 +127,13 @@ function renderDateStep(content) {
 
             let cls = 'w-10 h-10 mx-auto rounded-full flex items-center justify-center text-sm transition-all duration-200 ';
             if (isDisabled) {
-                cls += 'text-[#ccc] cursor-not-allowed';
+                cls += 'text-[#444] cursor-not-allowed';
             } else if (isSelected) {
-                cls += 'bg-[#1a1a1a] text-white font-medium';
+                cls += 'bg-[#f5f5f5] text-[#0E0E0E] font-medium';
             } else if (isToday) {
-                cls += 'border border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white cursor-pointer';
+                cls += 'border border-[#f5f5f5] text-[#f5f5f5] hover:bg-[#f5f5f5] hover:text-[#0E0E0E] cursor-pointer';
             } else {
-                cls += 'text-[#1a1a1a] hover:bg-[#e8e8e6] cursor-pointer';
+                cls += 'text-[#f5f5f5] hover:bg-[#2a2a2a] cursor-pointer';
             }
 
             days += `<div><button class="${cls}" ${isDisabled ? 'disabled' : ''} data-date="${dtStr}">${d}</button></div>`;
@@ -144,16 +144,16 @@ function renderDateStep(content) {
 
         return `
             <div class="flex items-center justify-between mb-6">
-                <button id="prev-month" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors ${!canPrev ? 'opacity-30 pointer-events-none' : ''}">
+                <button id="prev-month" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors ${!canPrev ? 'opacity-30 pointer-events-none' : ''}">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                 </button>
                 <h3 class="font-display text-lg">${monthName}</h3>
-                <button id="next-month" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors ${!canNext ? 'opacity-30 pointer-events-none' : ''}">
+                <button id="next-month" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors ${!canNext ? 'opacity-30 pointer-events-none' : ''}">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                 </button>
             </div>
             <div class="grid grid-cols-7 mb-2">
-                ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => `<div class="text-center text-xs text-[#999] font-medium py-2">${d}</div>`).join('')}
+                ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => `<div class="text-center text-xs text-[#666] font-medium py-2">${d}</div>`).join('')}
             </div>
             <div class="grid grid-cols-7 gap-y-1">
                 ${days}
@@ -164,8 +164,8 @@ function renderDateStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Pick a date</h2>
-            <p class="text-[#888] text-sm mb-8">Select your preferred date</p>
-            <div class="bg-white rounded-2xl p-5 shadow-sm" id="calendar-wrapper">
+            <p class="text-[#777] text-sm mb-8">Select your preferred date</p>
+            <div class="bg-[#1a1a1a] rounded-2xl p-5 shadow-sm" id="calendar-wrapper">
                 ${renderCalendar()}
             </div>
         </div>
@@ -205,7 +205,7 @@ async function renderServiceStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Choose a service</h2>
-            <p class="text-[#888] text-sm mb-8">${formatDateNice(bookingState.date)}</p>
+            <p class="text-[#777] text-sm mb-8">${formatDateNice(bookingState.date)}</p>
             <div class="flex items-center justify-center py-16">
                 <div class="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin"></div>
             </div>
@@ -218,7 +218,7 @@ async function renderServiceStep(content) {
     if (error || !data) {
         content.innerHTML = `
             <div class="animate-fade-in text-center py-16">
-                <p class="text-[#999]">Unable to load services. Please try again.</p>
+                <p class="text-[#666]">Unable to load services. Please try again.</p>
                 <button id="retry-services" class="mt-4 text-sm underline">Retry</button>
             </div>
         `;
@@ -234,14 +234,14 @@ async function renderServiceStep(content) {
         content.innerHTML = `
             <div class="animate-fade-in">
                 <h2 class="font-display text-2xl mb-2">Choose a service</h2>
-                <p class="text-[#888] text-sm mb-8">${formatDateNice(bookingState.date)}</p>
+                <p class="text-[#777] text-sm mb-8">${formatDateNice(bookingState.date)}</p>
                 <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-[#e8e8e6] rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-7 h-7 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <div class="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 text-[#666]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
                         </svg>
                     </div>
-                    <p class="text-[#888] text-sm">No ${bookingState.section === 'dining' ? 'dining' : 'walk-in'} services available on this date.</p>
+                    <p class="text-[#777] text-sm">No ${bookingState.section === 'dining' ? 'dining' : 'walk-in'} services available on this date.</p>
                     <button id="btn-change-date" class="mt-4 text-sm font-medium underline underline-offset-4">Pick another date</button>
                 </div>
             </div>
@@ -256,17 +256,17 @@ async function renderServiceStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Choose a service</h2>
-            <p class="text-[#888] text-sm mb-8">${formatDateNice(bookingState.date)}</p>
+            <p class="text-[#777] text-sm mb-8">${formatDateNice(bookingState.date)}</p>
             <div class="space-y-3" id="service-list">
                 ${availableServices.map(s => `
                     <button data-service-id="${s.service_id}" 
-                            class="group w-full bg-white rounded-2xl p-5 text-left transition-all duration-200 hover:shadow-md active:scale-[0.98] border border-transparent hover:border-[#e0e0e0]">
+                            class="group w-full bg-[#1a1a1a] rounded-2xl p-5 text-left transition-all duration-200 hover:shadow-md active:scale-[0.98] border border-transparent hover:border-[#333]">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="font-display text-lg">${s.name}</h3>
-                                <p class="text-[#888] text-sm mt-1">${formatTime(s.start_time)} – ${formatTime(s.end_time)}</p>
+                                <p class="text-[#777] text-sm mt-1">${formatTime(s.start_time)} – ${formatTime(s.end_time)}</p>
                             </div>
-                            <svg class="w-5 h-5 text-[#ccc] group-hover:text-[#1a1a1a] group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <svg class="w-5 h-5 text-[#ccc] group-hover:text-[#f5f5f5] group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                             </svg>
                         </div>
@@ -292,23 +292,23 @@ function renderPartySizeStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">How many guests?</h2>
-            <p class="text-[#888] text-sm mb-8">${formatDateNice(bookingState.date)} · ${bookingState.service.name}</p>
+            <p class="text-[#777] text-sm mb-8">${formatDateNice(bookingState.date)} · ${bookingState.service.name}</p>
             
             <div class="grid grid-cols-3 gap-3 mb-6" id="size-grid">
                 ${sizes.map(n => `
                     <button data-size="${n}" 
-                            class="h-16 bg-white rounded-2xl text-lg font-medium transition-all duration-200 hover:shadow-md active:scale-[0.96] border-2 border-transparent hover:border-[#1a1a1a] flex items-center justify-center">
+                            class="h-16 bg-[#1a1a1a] rounded-2xl text-lg font-medium transition-all duration-200 hover:shadow-md active:scale-[0.96] border-2 border-transparent hover:border-[#1a1a1a] flex items-center justify-center">
                         ${n}
                     </button>
                 `).join('')}
             </div>
 
             <!-- 7+ Large Party -->
-            <button id="btn-large-party" class="w-full bg-white rounded-2xl p-5 text-left border border-[#e8e8e6] transition-all hover:border-[#ccc]">
+            <button id="btn-large-party" class="w-full bg-[#1a1a1a] rounded-2xl p-5 text-left border border-[#2a2a2a] transition-all hover:border-[#ccc]">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="font-medium text-sm">7+ guests</p>
-                        <p class="text-[#999] text-xs mt-1">Contact us directly for large parties</p>
+                        <p class="text-[#666] text-xs mt-1">Contact us directly for large parties</p>
                     </div>
                     <svg class="w-5 h-5 text-[#ccc]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
@@ -327,7 +327,7 @@ function renderPartySizeStep(content) {
     });
 
     document.getElementById('btn-large-party').addEventListener('click', () => {
-        openWhatsApp(settings, "Hi, I'd like to book for a large party (7+ guests).");
+        openWhatsApp(settings, 'Hi, I'd like to book for a large party (7+ guests).');
     });
 }
 
@@ -357,14 +357,14 @@ async function renderTimeSlotStep(content) {
         if (remaining < bookingState.partySize) {
             content.innerHTML = `
                 <div class="animate-fade-in text-center py-12">
-                    <div class="w-16 h-16 bg-[#e8e8e6] rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-7 h-7 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <div class="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 text-[#666]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
                         </svg>
                     </div>
                     <h2 class="font-display text-xl mb-2">Fully Booked</h2>
-                    <p class="text-[#888] text-sm mb-6">This service doesn't have enough capacity for your party.</p>
-                    <button id="btn-try-other" class="bg-[#1a1a1a] text-white rounded-xl px-6 py-3 text-sm font-medium transition-all hover:bg-black active:scale-[0.98]">Try another service</button>
+                    <p class="text-[#777] text-sm mb-6">This service doesn't have enough capacity for your party.</p>
+                    <button id="btn-try-other" class="bg-[#f5f5f5] text-[#0E0E0E] rounded-xl px-6 py-3 text-sm font-medium transition-all hover:bg-white active:scale-[0.98]">Try another service</button>
                 </div>
             `;
             document.getElementById('btn-try-other')?.addEventListener('click', () => {
@@ -383,7 +383,7 @@ async function renderTimeSlotStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Pick a time</h2>
-            <p class="text-[#888] text-sm mb-8">${formatDateNice(bookingState.date)} · ${svc.name} · ${bookingState.partySize} ${bookingState.partySize === 1 ? 'guest' : 'guests'}</p>
+            <p class="text-[#777] text-sm mb-8">${formatDateNice(bookingState.date)} · ${svc.name} · ${bookingState.partySize} ${bookingState.partySize === 1 ? 'guest' : 'guests'}</p>
             <div class="flex items-center justify-center py-16">
                 <div class="w-6 h-6 border-2 border-[#1a1a1a] border-t-transparent rounded-full animate-spin"></div>
             </div>
@@ -432,16 +432,16 @@ async function renderTimeSlotStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Pick a time</h2>
-            <p class="text-[#888] text-sm mb-8">${formatDateNice(bookingState.date)} · ${svc.name} · ${bookingState.partySize} ${bookingState.partySize === 1 ? 'guest' : 'guests'}</p>
+            <p class="text-[#777] text-sm mb-8">${formatDateNice(bookingState.date)} · ${svc.name} · ${bookingState.partySize} ${bookingState.partySize === 1 ? 'guest' : 'guests'}</p>
             
             ${slotAvailability.every(s => !s.available) ? `
                 <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-[#e8e8e6] rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-7 h-7 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <div class="w-16 h-16 bg-[#2a2a2a] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 text-[#666]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <p class="text-[#888] text-sm mb-4">No available slots for ${bookingState.partySize} guests.</p>
+                    <p class="text-[#777] text-sm mb-4">No available slots for ${bookingState.partySize} guests.</p>
                     <button id="btn-try-smaller" class="text-sm font-medium underline underline-offset-4">Try a different party size</button>
                 </div>
             ` : `
@@ -451,13 +451,17 @@ async function renderTimeSlotStep(content) {
                                 ${!available ? 'disabled' : ''}
                                 class="h-14 rounded-xl text-sm font-medium transition-all duration-200
                                     ${available 
-                                        ? 'bg-white hover:shadow-md active:scale-[0.96] border-2 border-transparent hover:border-[#1a1a1a]' 
-                                        : 'bg-[#f0f0ee] text-[#ccc] cursor-not-allowed'}">
+                                        ? 'bg-[#1a1a1a] hover:shadow-md active:scale-[0.96] border-2 border-[#2a2a2a] hover:border-[#f5f5f5] text-[#f5f5f5]' 
+                                        : 'bg-[#111] text-[#333] cursor-not-allowed border-2 border-transparent'}">
                             ${formatTime(slot)}
                         </button>
                     `).join('')}
                 </div>
-                <p class="text-xs text-[#aaa] mt-4 text-center">Duration: ${formatDuration(duration)}</p>
+                <p class="text-xs text-[#555] mt-4 text-center">Duration: ${formatDuration(duration)}</p>
+                <div class="mt-5 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl px-4 py-3 flex items-start gap-3">
+                    <svg class="w-4 h-4 text-[#f5c542] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <p class="text-xs text-[#999] leading-relaxed">Please arrive within <span class="text-[#f5f5f5] font-medium">15 minutes</span> of your reserved time. Late arrivals may result in a shorter dining experience or table reassignment.</p>
+                </div>
             `}
         </div>
     `;
@@ -486,18 +490,18 @@ function renderWalkinTimePreference(content, svc) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Preferred arrival time</h2>
-            <p class="text-[#888] text-sm mb-8">Optional — helps us prepare for you</p>
+            <p class="text-[#777] text-sm mb-8">Optional — helps us prepare for you</p>
 
             <div class="grid grid-cols-3 gap-3 mb-6" id="walkin-slots">
                 ${slots.map(slot => `
                     <button data-slot="${slot}" 
-                            class="h-14 bg-white rounded-xl text-sm font-medium transition-all duration-200 hover:shadow-md active:scale-[0.96] border-2 border-transparent hover:border-[#1a1a1a]">
+                            class="h-14 bg-[#1a1a1a] rounded-xl text-sm font-medium transition-all duration-200 hover:shadow-md active:scale-[0.96] border-2 border-transparent hover:border-[#1a1a1a]">
                         ${formatTime(slot)}
                     </button>
                 `).join('')}
             </div>
 
-            <button id="btn-skip-time" class="w-full py-4 text-sm text-[#888] hover:text-[#1a1a1a] transition-colors underline underline-offset-4">
+            <button id="btn-skip-time" class="w-full py-4 text-sm text-[#777] hover:text-[#f5f5f5] transition-colors underline underline-offset-4">
                 Skip — no preference
             </button>
         </div>
@@ -525,64 +529,64 @@ function renderDetailsStep(content) {
     content.innerHTML = `
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-2">Your details</h2>
-            <p class="text-[#888] text-sm mb-8">We'll use these to confirm your booking</p>
+            <p class="text-[#777] text-sm mb-8">We'll use these to confirm your booking</p>
 
             <div class="space-y-4">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs text-[#888] mb-1.5 ml-1">First name</label>
+                        <label class="block text-xs text-[#777] mb-1.5 ml-1">First name</label>
                         <input type="text" id="inp-fname" value="${bookingState.firstName}" placeholder="John"
-                               class="w-full bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                               class="w-full bg-[#1a1a1a] rounded-xl px-4 py-3.5 text-sm border border-[#2a2a2a] focus:border-[#1a1a1a] focus:outline-none transition-colors">
                     </div>
                     <div>
-                        <label class="block text-xs text-[#888] mb-1.5 ml-1">Last name</label>
+                        <label class="block text-xs text-[#777] mb-1.5 ml-1">Last name</label>
                         <input type="text" id="inp-lname" value="${bookingState.lastName}" placeholder="Doe"
-                               class="w-full bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                               class="w-full bg-[#1a1a1a] rounded-xl px-4 py-3.5 text-sm border border-[#2a2a2a] focus:border-[#1a1a1a] focus:outline-none transition-colors">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs text-[#888] mb-1.5 ml-1">Phone number</label>
+                    <label class="block text-xs text-[#777] mb-1.5 ml-1">Phone number</label>
                     <div class="flex gap-2">
                         <div class="relative" id="country-picker" style="min-width: 112px;">
                             <button type="button" id="btn-country"
-                                    class="w-full bg-white rounded-xl px-3 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors flex items-center gap-1.5 text-left">
+                                    class="w-full bg-[#1a1a1a] rounded-xl px-3 py-3.5 text-sm border border-[#2a2a2a] focus:border-[#1a1a1a] focus:outline-none transition-colors flex items-center gap-1.5 text-left">
                                 <span id="country-flag">${(countryCodes.find(c => c.dial === bookingState.phoneCode) || countryCodes[0]).flag}</span>
                                 <span id="country-dial" class="font-medium">${bookingState.phoneCode}</span>
-                                <svg class="w-3.5 h-3.5 text-[#999] ml-auto shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                                <svg class="w-3.5 h-3.5 text-[#666] ml-auto shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
                             </button>
-                            <div id="country-dropdown" class="hidden absolute top-full left-0 mt-1 w-72 bg-white rounded-xl border border-[#e8e8e6] shadow-lg z-50 overflow-hidden">
-                                <div class="p-2 border-b border-[#f0f0ee]">
+                            <div id="country-dropdown" class="hidden absolute top-full left-0 mt-1 w-72 bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] shadow-lg z-50 overflow-hidden">
+                                <div class="p-2 border-b border-[#2a2a2a]">
                                     <input type="text" id="country-search" placeholder="Search country..."
-                                           class="w-full bg-[#f5f5f3] rounded-lg px-3 py-2 text-sm focus:outline-none">
+                                           class="w-full bg-[#0E0E0E] rounded-lg px-3 py-2 text-sm focus:outline-none">
                                 </div>
                                 <div id="country-list" class="max-h-48 overflow-y-auto"></div>
                             </div>
                         </div>
                         <input type="tel" id="inp-phone" value="${bookingState.phone}" placeholder="7700 900000"
-                               class="flex-1 bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                               class="flex-1 bg-[#1a1a1a] rounded-xl px-4 py-3.5 text-sm border border-[#2a2a2a] focus:border-[#1a1a1a] focus:outline-none transition-colors">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs text-[#888] mb-1.5 ml-1">Email</label>
+                    <label class="block text-xs text-[#777] mb-1.5 ml-1">Email</label>
                     <input type="email" id="inp-email" value="${bookingState.email}" placeholder="john@example.com"
-                           class="w-full bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                           class="w-full bg-[#1a1a1a] rounded-xl px-4 py-3.5 text-sm border border-[#2a2a2a] focus:border-[#1a1a1a] focus:outline-none transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-[#888] mb-1.5 ml-1">Date of birth</label>
+                    <label class="block text-xs text-[#777] mb-1.5 ml-1">Date of birth</label>
                     <input type="date" id="inp-dob" value="${bookingState.dob}"
-                           class="w-full bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                           class="w-full bg-[#1a1a1a] rounded-xl px-4 py-3.5 text-sm border border-[#2a2a2a] focus:border-[#1a1a1a] focus:outline-none transition-colors">
                 </div>
 
                 <!-- T&C -->
                 <label class="flex items-start gap-3 cursor-pointer py-2">
                     <input type="checkbox" id="inp-tc" ${bookingState.tcAccepted ? 'checked' : ''}
-                           class="w-5 h-5 rounded border-[#ddd] text-[#1a1a1a] mt-0.5 accent-[#1a1a1a]">
-                    <span class="text-sm text-[#888] leading-relaxed">
+                           class="w-5 h-5 rounded border-[#ddd] text-[#f5f5f5] mt-0.5 accent-[#1a1a1a]">
+                    <span class="text-sm text-[#777] leading-relaxed">
                         I agree to the 
-                        <a href="${settings?.terms_conditions_url || '#'}" target="_blank" class="underline text-[#1a1a1a]">Terms & Conditions</a>
+                        <a href="${settings?.terms_conditions_url || '#'}" target="_blank" class="underline text-[#f5f5f5]">Terms & Conditions</a>
                     </span>
                 </label>
             </div>
@@ -591,7 +595,7 @@ function renderDetailsStep(content) {
             <p id="details-error" class="text-red-500 text-xs mt-3 hidden"></p>
 
             <!-- Continue -->
-            <button id="btn-continue" class="w-full bg-[#1a1a1a] text-white rounded-xl py-4 mt-8 text-sm font-medium transition-all hover:bg-black active:scale-[0.98]">
+            <button id="btn-continue" class="w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-xl py-4 mt-8 text-sm font-medium transition-all hover:bg-white active:scale-[0.98]">
                 Review Booking
             </button>
         </div>
@@ -610,10 +614,10 @@ function renderDetailsStep(content) {
         );
         countryList.innerHTML = filtered.map(c => `
             <button type="button" data-dial="${c.dial}" data-flag="${c.flag}" data-name="${c.name}"
-                    class="country-option w-full px-3 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-[#f5f5f3] transition-colors">
+                    class="country-option w-full px-3 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-[#0E0E0E] transition-colors">
                 <span class="text-base">${c.flag}</span>
                 <span class="flex-1 truncate">${c.name}</span>
-                <span class="text-[#999] text-xs">${c.dial}</span>
+                <span class="text-[#666] text-xs">${c.dial}</span>
             </button>
         `).join('');
 
@@ -621,10 +625,10 @@ function renderDetailsStep(content) {
         if (!filter || 'other'.includes(q)) {
             countryList.innerHTML += `
                 <button type="button" data-dial="other"
-                        class="country-option w-full px-3 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-[#f5f5f3] transition-colors border-t border-[#f0f0ee]">
+                        class="country-option w-full px-3 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-[#0E0E0E] transition-colors border-t border-[#2a2a2a]">
                     <span class="text-base leading-none">&#127758;</span>
                     <span class="flex-1">Other</span>
-                    <span class="text-[#999] text-xs">Type code</span>
+                    <span class="text-[#666] text-xs">Type code</span>
                 </button>
             `;
         }
@@ -637,7 +641,7 @@ function renderDetailsStep(content) {
                 if (opt.dataset.dial === 'other') {
                     // Swap button for manual input
                     document.getElementById('btn-country').outerHTML = `
-                        <div class="flex items-center w-full bg-white rounded-xl px-3 py-3.5 text-sm border border-[#1a1a1a]">
+                        <div class="flex items-center w-full bg-[#1a1a1a] rounded-xl px-3 py-3.5 text-sm border border-[#1a1a1a]">
                             <span class="mr-1.5">&#127758;</span>
                             <input type="text" id="manual-code" value="+" placeholder="+__"
                                    class="w-full bg-transparent focus:outline-none font-medium" maxlength="5">
@@ -725,58 +729,58 @@ function renderReviewStep(content) {
         <div class="animate-fade-in">
             <h2 class="font-display text-2xl mb-8">Review your booking</h2>
 
-            <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
+            <div class="bg-[#1a1a1a] rounded-2xl p-6 shadow-sm mb-6">
                 <div class="space-y-4">
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Section</span>
-                        <span class="text-sm font-medium">${isDining ? 'Dining Table' : 'Walk-in Lounge'}</span>
+                        <span class="text-sm text-[#777]">Section</span>
+                        <span class="text-sm font-medium">${isDining ? 'Dining Table' : 'Drink Lounge'}</span>
                     </div>
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Date</span>
+                        <span class="text-sm text-[#777]">Date</span>
                         <span class="text-sm font-medium">${formatDateNice(bookingState.date)}</span>
                     </div>
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Service</span>
+                        <span class="text-sm text-[#777]">Service</span>
                         <span class="text-sm font-medium">${svc.name}</span>
                     </div>
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Guests</span>
+                        <span class="text-sm text-[#777]">Guests</span>
                         <span class="text-sm font-medium">${bookingState.partySize}</span>
                     </div>
                     ${bookingState.timeSlot ? `
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">${isDining ? 'Time' : 'Preferred arrival'}</span>
+                        <span class="text-sm text-[#777]">${isDining ? 'Time' : 'Preferred arrival'}</span>
                         <span class="text-sm font-medium">${formatTime(bookingState.timeSlot)}</span>
                     </div>
                     ` : ''}
                     ${isDining ? `
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Duration</span>
+                        <span class="text-sm text-[#777]">Duration</span>
                         <span class="text-sm font-medium">${formatDuration(bookingState.durationMinutes)}</span>
                     </div>
                     ` : ''}
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 shadow-sm mb-8">
+            <div class="bg-[#1a1a1a] rounded-2xl p-6 shadow-sm mb-8">
                 <div class="space-y-3">
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Name</span>
+                        <span class="text-sm text-[#777]">Name</span>
                         <span class="text-sm font-medium">${bookingState.firstName} ${bookingState.lastName}</span>
                     </div>
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Phone</span>
+                        <span class="text-sm text-[#777]">Phone</span>
                         <span class="text-sm font-medium">${bookingState.phoneCode} ${bookingState.phone}</span>
                     </div>
-                    <div class="h-px bg-[#f0f0ee]"></div>
+                    <div class="h-px bg-[#1a1a1a]"></div>
                     <div class="flex justify-between">
-                        <span class="text-sm text-[#888]">Email</span>
+                        <span class="text-sm text-[#777]">Email</span>
                         <span class="text-sm font-medium">${bookingState.email}</span>
                     </div>
                 </div>
@@ -785,11 +789,18 @@ function renderReviewStep(content) {
             <!-- Error -->
             <p id="submit-error" class="text-red-500 text-xs mb-3 hidden"></p>
 
-            <button id="btn-confirm" class="w-full bg-[#1a1a1a] text-white rounded-xl py-4 text-sm font-medium transition-all hover:bg-black active:scale-[0.98]">
+            ${isDining ? `
+            <div class="mb-5 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl px-4 py-3 flex items-start gap-3">
+                <svg class="w-4 h-4 text-[#f5c542] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-xs text-[#999] leading-relaxed">Please arrive within <span class="text-[#f5f5f5] font-medium">15 minutes</span> of your reserved time. Late arrivals may result in a shorter dining experience or table reassignment.</p>
+            </div>
+            ` : ''}
+
+            <button id="btn-confirm" class="w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-xl py-4 text-sm font-medium transition-all hover:bg-white active:scale-[0.98]">
                 Confirm Booking
             </button>
 
-            <p class="text-center text-xs text-[#aaa] mt-4">By confirming, you agree to our Terms & Conditions</p>
+            <p class="text-center text-xs text-[#555] mt-4">By confirming, you agree to our Terms & Conditions</p>
         </div>
     `;
 
@@ -801,7 +812,7 @@ async function submitBooking(content) {
     btn.disabled = true;
     btn.innerHTML = `
         <div class="flex items-center justify-center gap-2">
-            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div class="w-4 h-4 border-2 border-[#0E0E0E] border-t-transparent rounded-full animate-spin"></div>
             Confirming...
         </div>
     `;
