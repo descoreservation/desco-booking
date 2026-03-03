@@ -82,7 +82,7 @@ export function renderFooter(target, settings) {
                 <!-- Links -->
                 <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-center gap-6 text-xs text-[#666]">
                     ${settings?.website_url ? `<a href="${settings.website_url}" target="_blank" class="hover:text-white transition-colors">Website</a>` : ''}
-                    ${settings?.terms_conditions_url ? `<a href="${settings.terms_conditions_url}" target="_blank" class="hover:text-white transition-colors">Terms & Conditions</a>` : ''}
+                    <a href="/terms" class="hover:text-white transition-colors">Terms & Conditions</a>
                 </div>
 
                 <p class="text-center text-[10px] text-[#444] mt-6">&copy; ${new Date().getFullYear()} DESCO</p>
