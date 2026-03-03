@@ -13,7 +13,7 @@ export async function renderHome(container) {
                 
                 <!-- Logo -->
                 <div class="mb-10 animate-fade-in">
-                    <img src="/public/logo.png" alt="DESCO" class="h-16 w-auto" onerror="this.onerror=null; this.innerHTML=''; this.parentElement.innerHTML='<h1 class=\\'font-display text-5xl tracking-tight text-[#f5f5f5]\\'>DESCO</h1>';">
+                    <img src="/public/logo.png" alt="DESCO" class="h-24 w-auto" onerror="this.onerror=null; this.innerHTML=''; this.parentElement.innerHTML='<h1 class=\\'font-display text-5xl tracking-tight text-[#f5f5f5]\\'>DESCO</h1>';">
                 </div>
 
                 <!-- Tagline -->
