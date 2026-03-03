@@ -409,7 +409,11 @@ async function renderTimeSlotStep(content) {
         }
 
         // Slot must be within service window (end_time = last seating, not departure)
-        if (slot >= svc.end_time) return { slot, available: false, reason: 'exceeds' };
+        const slotMins = timeToMins(slot);
+        const startMins = timeToMins(svc.start_time);
+        let endMins = timeToMins(svc.end_time);
+        if (endMins <= startMins) endMins += 24 * 60;
+        if (slotMins < startMins || slotMins >= endMins) return { slot, available: false, reason: 'exceeds' };
 
         // Check capacity for each occupied slot
         for (const os of occupiedSlots) {
@@ -770,15 +774,28 @@ function formatDuration(min) {
 function generateTimeSlots(startTime, endTime, intervalMin) {
     const slots = [];
     let [sh, sm] = startTime.split(':').map(Number);
-    const [eh, em] = endTime.split(':').map(Number);
-    const endMins = eh * 60 + em;
+    let [eh, em] = endTime.split(':').map(Number);
+    const startMins = sh * 60 + sm;
+    let endMins = eh * 60 + em;
 
-    while (sh * 60 + sm < endMins) {
-        slots.push(`${String(sh).padStart(2, '0')}:${String(sm).padStart(2, '0')}`);
-        sm += intervalMin;
-        if (sm >= 60) { sh += Math.floor(sm / 60); sm = sm % 60; }
+    // Handle midnight/past-midnight: if end <= start, treat as next day
+    if (endMins <= startMins) {
+        endMins += 24 * 60;
+    }
+
+    let currentMins = startMins;
+    while (currentMins < endMins) {
+        const h = Math.floor(currentMins / 60) % 24;
+        const m = currentMins % 60;
+        slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+        currentMins += intervalMin;
     }
     return slots;
+}
+
+function timeToMins(timeStr) {
+    const [h, m] = timeStr.split(':').map(Number);
+    return h * 60 + m;
 }
 
 function addMinutes(timeStr, mins) {
