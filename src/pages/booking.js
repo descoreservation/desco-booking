@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase.js';
 import { navigate, getState } from '../app.js';
 import { renderFooter, fetchSiteSettings } from './footer.js';
+import { countryCodes } from '../lib/countries.js';
 
 // ── State ──────────────────────────────────────────
 let bookingState = {
@@ -12,6 +13,7 @@ let bookingState = {
     firstName: '',
     lastName: '',
     phone: '',
+    phoneCode: '+39',
     email: '',
     dob: '',
     tcAccepted: false,
@@ -541,8 +543,25 @@ function renderDetailsStep(content) {
 
                 <div>
                     <label class="block text-xs text-[#888] mb-1.5 ml-1">Phone number</label>
-                    <input type="tel" id="inp-phone" value="${bookingState.phone}" placeholder="+44 7700 900000"
-                           class="w-full bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                    <div class="flex gap-2">
+                        <div class="relative" id="country-picker" style="min-width: 112px;">
+                            <button type="button" id="btn-country"
+                                    class="w-full bg-white rounded-xl px-3 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors flex items-center gap-1.5 text-left">
+                                <span id="country-flag">${(countryCodes.find(c => c.dial === bookingState.phoneCode) || countryCodes[0]).flag}</span>
+                                <span id="country-dial" class="font-medium">${bookingState.phoneCode}</span>
+                                <svg class="w-3.5 h-3.5 text-[#999] ml-auto shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                            </button>
+                            <div id="country-dropdown" class="hidden absolute top-full left-0 mt-1 w-72 bg-white rounded-xl border border-[#e8e8e6] shadow-lg z-50 overflow-hidden">
+                                <div class="p-2 border-b border-[#f0f0ee]">
+                                    <input type="text" id="country-search" placeholder="Search country..."
+                                           class="w-full bg-[#f5f5f3] rounded-lg px-3 py-2 text-sm focus:outline-none">
+                                </div>
+                                <div id="country-list" class="max-h-48 overflow-y-auto"></div>
+                            </div>
+                        </div>
+                        <input type="tel" id="inp-phone" value="${bookingState.phone}" placeholder="7700 900000"
+                               class="flex-1 bg-white rounded-xl px-4 py-3.5 text-sm border border-[#e8e8e6] focus:border-[#1a1a1a] focus:outline-none transition-colors">
+                    </div>
                 </div>
 
                 <div>
@@ -578,6 +597,95 @@ function renderDetailsStep(content) {
         </div>
     `;
 
+    // ── Country picker logic ──
+    const btnCountry = document.getElementById('btn-country');
+    const dropdown = document.getElementById('country-dropdown');
+    const searchInput = document.getElementById('country-search');
+    const countryList = document.getElementById('country-list');
+
+    function renderCountryList(filter = '') {
+        const q = filter.toLowerCase();
+        const filtered = countryCodes.filter(c =>
+            c.name.toLowerCase().includes(q) || c.dial.includes(q) || c.code.toLowerCase().includes(q)
+        );
+        countryList.innerHTML = filtered.map(c => `
+            <button type="button" data-dial="${c.dial}" data-flag="${c.flag}" data-name="${c.name}"
+                    class="country-option w-full px-3 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-[#f5f5f3] transition-colors">
+                <span class="text-base">${c.flag}</span>
+                <span class="flex-1 truncate">${c.name}</span>
+                <span class="text-[#999] text-xs">${c.dial}</span>
+            </button>
+        `).join('');
+
+        // Add "Other" at the bottom always
+        if (!filter || 'other'.includes(q)) {
+            countryList.innerHTML += `
+                <button type="button" data-dial="other"
+                        class="country-option w-full px-3 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-[#f5f5f3] transition-colors border-t border-[#f0f0ee]">
+                    <span class="text-base leading-none">&#127758;</span>
+                    <span class="flex-1">Other</span>
+                    <span class="text-[#999] text-xs">Type code</span>
+                </button>
+            `;
+        }
+
+        countryList.querySelectorAll('.country-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                dropdown.classList.add('hidden');
+                searchInput.value = '';
+
+                if (opt.dataset.dial === 'other') {
+                    // Swap button for manual input
+                    document.getElementById('btn-country').outerHTML = `
+                        <div class="flex items-center w-full bg-white rounded-xl px-3 py-3.5 text-sm border border-[#1a1a1a]">
+                            <span class="mr-1.5">&#127758;</span>
+                            <input type="text" id="manual-code" value="+" placeholder="+__"
+                                   class="w-full bg-transparent focus:outline-none font-medium" maxlength="5">
+                        </div>
+                    `;
+                    const manualInput = document.getElementById('manual-code');
+                    manualInput.focus();
+                    manualInput.addEventListener('input', () => {
+                        let v = manualInput.value.replace(/[^0-9+]/g, '');
+                        if (!v.startsWith('+')) v = '+' + v;
+                        manualInput.value = v;
+                        bookingState.phoneCode = v;
+                    });
+                    return;
+                }
+
+                bookingState.phoneCode = opt.dataset.dial;
+                document.getElementById('country-flag').textContent = opt.dataset.flag;
+                document.getElementById('country-dial').textContent = opt.dataset.dial;
+            });
+        });
+    }
+
+    renderCountryList();
+
+    btnCountry.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+        if (!dropdown.classList.contains('hidden')) {
+            searchInput.value = '';
+            renderCountryList();
+            setTimeout(() => searchInput.focus(), 50);
+        }
+    });
+
+    searchInput?.addEventListener('input', (e) => {
+        renderCountryList(e.target.value);
+    });
+
+    searchInput?.addEventListener('click', (e) => e.stopPropagation());
+
+    document.addEventListener('click', function closeDropdown(e) {
+        if (!document.getElementById('country-picker')?.contains(e.target)) {
+            dropdown?.classList.add('hidden');
+        }
+    });
+
+    // ── Continue button ──
     document.getElementById('btn-continue').addEventListener('click', () => {
         const firstName = document.getElementById('inp-fname').value.trim();
         const lastName = document.getElementById('inp-lname').value.trim();
@@ -602,7 +710,7 @@ function renderDetailsStep(content) {
             return;
         }
 
-        Object.assign(bookingState, { firstName, lastName, phone, email, dob, tcAccepted: tc });
+        Object.assign(bookingState, { firstName, lastName, phone: bookingState.phoneCode + ' ' + phone, email, dob, tcAccepted: tc });
         step = 5;
         renderStep(document.getElementById('app'));
     });
