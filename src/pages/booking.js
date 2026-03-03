@@ -586,7 +586,7 @@ function renderDetailsStep(content) {
                            class="w-5 h-5 rounded border-[#ddd] text-[#f5f5f5] mt-0.5 accent-[#1a1a1a]">
                     <span class="text-sm text-[#777] leading-relaxed">
                         I agree to the 
-                        <a href="${settings?.terms_conditions_url || '#'}" target="_blank" class="underline text-[#f5f5f5]">Terms & Conditions</a>
+                        <a href="${settings?.terms_conditions_url || '#'}" target="_blank" class="underline text-[#f5f5f5]">Terms & Conditions and Privacy Policy</a>
                     </span>
                 </label>
             </div>
@@ -705,7 +705,7 @@ function renderDetailsStep(content) {
         if (!phone) errors.push('Phone number is required');
         if (!email || !email.includes('@')) errors.push('Valid email is required');
         if (!dob) errors.push('Date of birth is required');
-        if (!tc) errors.push('Please accept the Terms & Conditions');
+        if (!tc) errors.push('Please accept the Terms & Conditions and Privacy Policy');
 
         if (errors.length) {
             const errEl = document.getElementById('details-error');
@@ -800,7 +800,7 @@ function renderReviewStep(content) {
                 Confirm Booking
             </button>
 
-            <p class="text-center text-xs text-[#555] mt-4">By confirming, you agree to our Terms & Conditions</p>
+            <p class="text-center text-xs text-[#555] mt-4">By confirming, you agree to our Terms & Conditions and Privacy Policy</p>
         </div>
     `;
 
