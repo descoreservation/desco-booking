@@ -325,7 +325,7 @@ function renderPartySizeStep(content) {
     });
 
     document.getElementById('btn-large-party').addEventListener('click', () => {
-        openWhatsApp(settings, 'Hi, I'd like to book for a large party (7+ guests).');
+        openWhatsApp(settings, "Hi, I'd like to book for a large party (7+ guests).");
     });
 }
 
