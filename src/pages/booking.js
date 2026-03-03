@@ -327,7 +327,7 @@ function renderPartySizeStep(content) {
     });
 
     document.getElementById('btn-large-party').addEventListener('click', () => {
-        openWhatsApp(settings, "Hi, I'd like to book for a large party (7+ guests).");
+        openWhatsApp(settings, 'Hi, I'd like to book for a large party (7+ guests).');
     });
 }
 
@@ -710,7 +710,7 @@ function renderDetailsStep(content) {
             return;
         }
 
-        Object.assign(bookingState, { firstName, lastName, phone: bookingState.phoneCode + ' ' + phone, email, dob, tcAccepted: tc });
+        Object.assign(bookingState, { firstName, lastName, phone, email, dob, tcAccepted: tc });
         step = 5;
         renderStep(document.getElementById('app'));
     });
@@ -772,7 +772,7 @@ function renderReviewStep(content) {
                     <div class="h-px bg-[#f0f0ee]"></div>
                     <div class="flex justify-between">
                         <span class="text-sm text-[#888]">Phone</span>
-                        <span class="text-sm font-medium">${bookingState.phone}</span>
+                        <span class="text-sm font-medium">${bookingState.phoneCode} ${bookingState.phone}</span>
                     </div>
                     <div class="h-px bg-[#f0f0ee]"></div>
                     <div class="flex justify-between">
@@ -815,7 +815,7 @@ async function submitBooking(content) {
         duration_minutes: bookingState.durationMinutes,
         first_name: bookingState.firstName,
         last_name: bookingState.lastName,
-        phone_encrypted: bookingState.phone,
+        phone_encrypted: bookingState.phoneCode + ' ' + bookingState.phone,
         email_encrypted: bookingState.email,
         dob_encrypted: bookingState.dob,
         tc_accepted: true,
