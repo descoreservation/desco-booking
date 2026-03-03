@@ -1,24 +1,17 @@
-import { getSupabaseAdmin } from './_lib/supabase.js';
-import { encryptBookingPII, decryptBookingPII } from './_lib/crypto.js';
+import { getSupabase } from './_lib/supabase.js';
+import { encryptBookingPII } from './_lib/crypto.js';
 
 export default async function handler(req, res) {
-    // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
+    if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     try {
         const body = req.body;
 
-        // Basic validation
         if (!body.service_id) return res.status(400).json({ error: 'service_id is required' });
         if (!body.section) return res.status(400).json({ error: 'section is required' });
         if (!body.booking_date) return res.status(400).json({ error: 'booking_date is required' });
@@ -30,7 +23,6 @@ export default async function handler(req, res) {
         if (!body.tc_accepted) return res.status(400).json({ error: 'T&C must be accepted' });
         if (body.section === 'dining' && !body.time_slot) return res.status(400).json({ error: 'time_slot is required for dining' });
 
-        // Build payload
         const payload = {
             service_id: body.service_id,
             section: body.section,
@@ -48,10 +40,7 @@ export default async function handler(req, res) {
             status: 'confirmed',
         };
 
-        // Encrypt PII
         const encrypted = encryptBookingPII(payload);
-
-        // Insert via anon key (RLS allows public insert on bookings)
         const supabase = getSupabase();
         const { error } = await supabase
             .from('bookings')
@@ -62,7 +51,6 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to create booking' });
         }
 
-        // Return the original data for confirmation (we can't read back with anon key)
         return res.status(201).json({
             ...payload,
             booking_date: body.booking_date,
