@@ -1,11 +1,13 @@
 import { renderHome } from './pages/home.js';
 import { renderBooking } from './pages/booking.js';
 import { renderConfirmation } from './pages/confirmation.js';
+import { renderTerms } from './pages/terms.js';
 
 const routes = {
     '/': renderHome,
     '/book': renderBooking,
     '/confirmation': renderConfirmation,
+    '/terms': renderTerms,
 };
 
 let currentState = {};
