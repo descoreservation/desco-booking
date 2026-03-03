@@ -1,141 +1,76 @@
-// ============================================================
-// /api/bookings — Admin CRUD with PII encryption/decryption
-// ============================================================
-import { getSupabaseAdmin, verifyAdmin } from './_lib/supabase.js';
+import { getSupabaseAdmin } from './_lib/supabase.js';
 import { encryptBookingPII, decryptBookingPII } from './_lib/crypto.js';
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    // CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-
-  const admin = await verifyAdmin(req);
-  if (!admin) return res.status(401).json({ error: 'Unauthorized' });
-
-  const supabase = getSupabaseAdmin();
-
-  try {
-    switch (req.method) {
-      case 'GET':    return await handleGet(req, res, supabase);
-      case 'POST':   return await handlePost(req, res, supabase);
-      case 'PUT':    return await handlePut(req, res, supabase);
-      case 'DELETE':  return await handleDelete(req, res, supabase);
-      default:       return res.status(405).json({ error: 'Method not allowed' });
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
     }
-  } catch (err) {
-    console.error('Admin bookings API error:', err);
-    return res.status(500).json({ error: err.message || 'Internal server error' });
-  }
-}
 
-// ============================================================
-// GET — list bookings (decrypted)
-// ============================================================
-async function handleGet(req, res, supabase) {
-  const { date, date_from, date_to, section, status, search } = req.query;
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-  let query = supabase
-    .from('bookings')
-    .select('*, services(name)')
-    .order('booking_date', { ascending: true })
-    .order('time_slot', { ascending: true, nullsFirst: false })
-    .order('created_at', { ascending: true });
+    try {
+        const body = req.body;
 
-  // Date range or single date
-  if (date_from && date_to) {
-    query = query.gte('booking_date', date_from).lte('booking_date', date_to);
-  } else if (date) {
-    query = query.eq('booking_date', date);
-  }
+        // Basic validation
+        if (!body.service_id) return res.status(400).json({ error: 'service_id is required' });
+        if (!body.section) return res.status(400).json({ error: 'section is required' });
+        if (!body.booking_date) return res.status(400).json({ error: 'booking_date is required' });
+        if (!body.party_size) return res.status(400).json({ error: 'party_size is required' });
+        if (!body.first_name) return res.status(400).json({ error: 'first_name is required' });
+        if (!body.last_name) return res.status(400).json({ error: 'last_name is required' });
+        if (!body.phone_encrypted) return res.status(400).json({ error: 'phone is required' });
+        if (!body.email_encrypted) return res.status(400).json({ error: 'email is required' });
+        if (!body.tc_accepted) return res.status(400).json({ error: 'T&C must be accepted' });
+        if (body.section === 'dining' && !body.time_slot) return res.status(400).json({ error: 'time_slot is required for dining' });
 
-  if (section && section !== 'all') query = query.eq('section', section);
-  if (status && status !== 'all') query = query.eq('status', status);
-  if (search) query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%`);
+        // Build payload
+        const payload = {
+            service_id: body.service_id,
+            section: body.section,
+            booking_date: body.booking_date,
+            time_slot: body.time_slot || null,
+            party_size: body.party_size,
+            duration_minutes: body.duration_minutes,
+            first_name: body.first_name,
+            last_name: body.last_name,
+            phone_encrypted: body.phone_encrypted,
+            email_encrypted: body.email_encrypted,
+            dob_encrypted: body.dob_encrypted || null,
+            tc_accepted: body.tc_accepted,
+            source: 'user',
+            status: 'confirmed',
+        };
 
-  const { data, error } = await query;
-  if (error) return res.status(400).json({ error: error.message });
+        // Encrypt PII
+        const encrypted = encryptBookingPII(payload);
 
-  const decrypted = (data || []).map(b => {
-    try { return decryptBookingPII(b); }
-    catch { return b; }
-  });
+        // Insert via anon key (RLS allows public insert on bookings)
+        const supabase = getSupabase();
+        const { error } = await supabase
+            .from('bookings')
+            .insert([encrypted]);
 
-  return res.status(200).json(decrypted);
-}
+        if (error) {
+            console.error('Supabase insert error:', error);
+            return res.status(500).json({ error: 'Failed to create booking' });
+        }
 
-// ============================================================
-// POST — create booking (encrypt PII)
-// ============================================================
-async function handlePost(req, res, supabase) {
-  const body = req.body;
+        // Return the original data for confirmation (we can't read back with anon key)
+        return res.status(201).json({
+            ...payload,
+            booking_date: body.booking_date,
+            time_slot: body.time_slot || null,
+        });
 
-  if (!body.first_name || !body.last_name) {
-    return res.status(400).json({ error: 'Name is required' });
-  }
-  if (!body.service_id || !body.booking_date) {
-    return res.status(400).json({ error: 'Service and date are required' });
-  }
-
-  const encrypted = encryptBookingPII(body);
-
-  const { data, error } = await supabase
-    .from('bookings')
-    .insert(encrypted)
-    .select('*, services(name)')
-    .single();
-
-  if (error) return res.status(400).json({ error: error.message });
-  return res.status(201).json(decryptBookingPII(data));
-}
-
-// ============================================================
-// PUT — update booking (encrypt PII fields if present)
-// ============================================================
-async function handlePut(req, res, supabase) {
-  const { id, ...updates } = req.body;
-  if (!id) return res.status(400).json({ error: 'Booking ID is required' });
-
-  // Only encrypt PII fields if they're present and non-empty
-  if (updates.phone_encrypted) {
-    const { encrypt } = await import('./_lib/crypto.js');
-    updates.phone_encrypted = encrypt(updates.phone_encrypted);
-  }
-  if (updates.email_encrypted) {
-    const { encrypt } = await import('./_lib/crypto.js');
-    updates.email_encrypted = encrypt(updates.email_encrypted);
-  }
-  if (updates.dob_encrypted) {
-    const { encrypt } = await import('./_lib/crypto.js');
-    updates.dob_encrypted = encrypt(updates.dob_encrypted);
-  }
-
-  const { data, error } = await supabase
-    .from('bookings')
-    .update(updates)
-    .eq('id', id)
-    .select('*, services(name)')
-    .single();
-
-  if (error) return res.status(400).json({ error: error.message });
-  return res.status(200).json(decryptBookingPII(data));
-}
-
-// ============================================================
-// DELETE — cancel booking (soft delete)
-// ============================================================
-async function handleDelete(req, res, supabase) {
-  const { id } = req.query;
-  if (!id) return res.status(400).json({ error: 'Booking ID is required' });
-
-  const { data, error } = await supabase
-    .from('bookings')
-    .update({ status: 'cancelled' })
-    .eq('id', id)
-    .select('*, services(name)')
-    .single();
-
-  if (error) return res.status(400).json({ error: error.message });
-  return res.status(200).json(decryptBookingPII(data));
+    } catch (err) {
+        console.error('Booking API error:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 }
