@@ -53,20 +53,21 @@ export default async function handler(req, res) {
 
         // Insert via anon key (RLS allows public insert on bookings)
         const supabase = getSupabase();
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('bookings')
-            .insert([encrypted])
-            .select()
-            .single();
+            .insert([encrypted]);
 
         if (error) {
             console.error('Supabase insert error:', error);
             return res.status(500).json({ error: 'Failed to create booking' });
         }
 
-        // Return decrypted for confirmation page
-        const decrypted = decryptBookingPII(data);
-        return res.status(201).json(decrypted);
+        // Return the original data for confirmation (we can't read back with anon key)
+        return res.status(201).json({
+            ...payload,
+            booking_date: body.booking_date,
+            time_slot: body.time_slot || null,
+        });
 
     } catch (err) {
         console.error('Booking API error:', err);
