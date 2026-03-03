@@ -13,7 +13,7 @@ export async function renderHome(container) {
                 
                 <!-- Logo -->
                 <div class="mb-10 animate-fade-in">
-                    <img src="/public/logo.png" alt="DESCO" class="h-32 w-auto" onerror="this.onerror=null; this.innerHTML=''; this.parentElement.innerHTML='<h1 class=\\'font-display text-5xl tracking-tight text-[#f5f5f5]\\'>DESCO</h1>';">
+                    <img src="/public/logo.png" alt="DESCO" class="h-24 w-auto" onerror="this.onerror=null; this.innerHTML=''; this.parentElement.innerHTML='<h1 class=\\'font-display text-5xl tracking-tight text-[#f5f5f5]\\'>DESCO</h1>';">
                 </div>
 
                 <!-- Tagline -->
@@ -25,26 +25,26 @@ export async function renderHome(container) {
                 <div class="w-full max-w-sm space-y-4 animate-fade-in-delay-2">
                     
                     <!-- Drink Lounge (primary, slightly bigger) -->
-                    <button id="btn-walkin" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl p-7 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
+                    <button id="btn-walkin" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-7 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h2 class="font-display text-2xl mb-1">Drink Lounge</h2>
                                 <p class="text-[#666] text-sm">Secure your spot</p>
                             </div>
-                            <svg class="w-5 h-5 text-[#999] group-hover:text-[#0E0E0E] group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <svg class="w-5 h-5 text-[#999] group-hover:text-[#0E0E0E] group-hover:translate-x-1 transition-all duration-300 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                             </svg>
                         </div>
                     </button>
 
                     <!-- Dining Table -->
-                    <button id="btn-dining" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl p-6 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
+                    <button id="btn-dining" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-5 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h2 class="font-display text-xl mb-1">Dining Table</h2>
                                 <p class="text-[#666] text-sm">Reserve your table</p>
                             </div>
-                            <svg class="w-5 h-5 text-[#999] group-hover:text-[#0E0E0E] group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <svg class="w-5 h-5 text-[#999] group-hover:text-[#0E0E0E] group-hover:translate-x-1 transition-all duration-300 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                             </svg>
                         </div>
