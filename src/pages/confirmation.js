@@ -32,6 +32,26 @@ export async function renderConfirmation(container) {
                     <p class="text-[#777] text-sm">We look forward to seeing you</p>
                 </div>
 
+                <!-- WhatsApp CTA for Dining -->
+                ${isDining && waNumber ? `
+                <div class="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-5 mb-6 animate-fade-in-delay-2">
+                    <div class="flex items-start gap-3 mb-4">
+                        <div class="w-8 h-8 bg-[#25D366]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-[#f5f5f5] font-medium mb-1">Help us get ready for you</p>
+                            <p class="text-xs text-[#777] leading-relaxed">Send us a quick message so our team can prepare the best experience for your visit.</p>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/${waNumber}?text=${encodeURIComponent(buildDiningWhatsApp(booking, service))}" target="_blank"
+                       class="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white rounded-xl py-3.5 text-sm font-medium transition-all hover:bg-[#22c55e] active:scale-[0.98]">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                        Send via WhatsApp
+                    </a>
+                </div>
+                ` : ''}
+
                 <!-- Summary Card -->
                 <div class="bg-[#1a1a1a] rounded-2xl p-6 border border-[#2a2a2a] mb-6 animate-fade-in-delay-2">
                     <div class="space-y-4">
@@ -73,26 +93,6 @@ export async function renderConfirmation(container) {
                 <div class="mb-6 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl px-4 py-3 flex items-start gap-3 animate-fade-in-delay-2">
                     <svg class="w-4 h-4 text-[#f5c542] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <p class="text-xs text-[#999] leading-relaxed">Please arrive within <span class="text-[#f5f5f5] font-medium">15 minutes</span> of your reserved time. Late arrivals may result in a shorter dining experience or table reassignment.</p>
-                </div>
-                ` : ''}
-
-                <!-- WhatsApp CTA for Dining -->
-                ${isDining && waNumber ? `
-                <div class="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-5 mb-6 animate-fade-in-delay-2">
-                    <div class="flex items-start gap-3 mb-4">
-                        <div class="w-8 h-8 bg-[#25D366]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                            <svg class="w-4 h-4 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-[#f5f5f5] font-medium mb-1">Help us get ready for you</p>
-                            <p class="text-xs text-[#777] leading-relaxed">Send us a quick message so our team can prepare the best experience for your visit.</p>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/${waNumber}?text=${encodeURIComponent(buildDiningWhatsApp(booking, service))}" target="_blank"
-                       class="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white rounded-xl py-3.5 text-sm font-medium transition-all hover:bg-[#22c55e] active:scale-[0.98]">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
-                        Send via WhatsApp
-                    </a>
                 </div>
                 ` : ''}
 
