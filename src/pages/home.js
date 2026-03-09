@@ -28,10 +28,8 @@ export async function renderHome(container) {
                     <button id="btn-walkin" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-7 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <svg class="w-6 h-6 text-[#0E0E0E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M8 22h8"/>
-                                    <path d="M12 11v11"/>
-                                    <path d="M19.5 2L12 11 4.5 2h15z"/>
+                                <svg class="w-6 h-6 text-[#0E0E0E]" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M11 19h2v3h-2zM8 22h8v-1H8zM4.5 2l7.5 9 7.5-9H4.5zM7.3 4h9.4L12 9.6 7.3 4z"/>
                                 </svg>
                                 <div>
                                     <h2 class="font-display text-2xl mb-1">Drink Lounge</h2>
