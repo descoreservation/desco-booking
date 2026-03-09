@@ -28,7 +28,7 @@ export async function renderHome(container) {
                     <button id="btn-walkin" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-7 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <svg class="w-6 h-6 text-[#999] group-hover:text-[#0E0E0E] transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-6 h-6 text-[#0E0E0E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M8 22h8"/>
                                     <path d="M12 11v11"/>
                                     <path d="M19.5 2L12 11 4.5 2h15z"/>
@@ -48,12 +48,10 @@ export async function renderHome(container) {
                     <button id="btn-dining" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-5 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-4">
-                                <svg class="w-6 h-6 text-[#999] group-hover:text-[#0E0E0E] transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="8"/>
-                                    <path d="M3 12h1m16 0h1"/>
-                                    <path d="M5 2v6a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/>
-                                    <path d="M7 2v4"/>
-                                    <path d="M15 2v8.5a2.5 2.5 0 0 0 5 0V6a1 1 0 0 0-1-1h-1"/>
+                                <svg class="w-6 h-6 text-[#0E0E0E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+                                    <path d="M7 2v20"/>
+                                    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
                                 </svg>
                                 <div>
                                     <h2 class="font-display text-xl mb-1">Dining Table</h2>
