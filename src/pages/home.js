@@ -29,7 +29,7 @@ export async function renderHome(container) {
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-4">
                                 <svg class="w-6 h-6 text-[#0E0E0E]" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M11 19h2v3h-2zM8 22h8v-1H8zM4.5 2l7.5 9 7.5-9H4.5zM7.3 4h9.4L12 9.6 7.3 4z"/>
+                                    <path d="M21 5V3H3v2l8 9v5H6v2h12v-2h-5v-5l8-9zM7.43 7L5.66 5h12.69l-1.78 2H7.43z"/>
                                 </svg>
                                 <div>
                                     <h2 class="font-display text-2xl mb-1">Drink Lounge</h2>
