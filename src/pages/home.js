@@ -27,9 +27,16 @@ export async function renderHome(container) {
                     <!-- Drink Lounge (primary, slightly bigger) -->
                     <button id="btn-walkin" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-7 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
-                            <div>
-                                <h2 class="font-display text-2xl mb-1">Drink Lounge</h2>
-                                <p class="text-[#666] text-sm">Secure your spot</p>
+                            <div class="flex items-center gap-4">
+                                <svg class="w-6 h-6 text-[#999] group-hover:text-[#0E0E0E] transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 22h8"/>
+                                    <path d="M12 11v11"/>
+                                    <path d="M19.5 2L12 11 4.5 2h15z"/>
+                                </svg>
+                                <div>
+                                    <h2 class="font-display text-2xl mb-1">Drink Lounge</h2>
+                                    <p class="text-[#666] text-sm">Secure your spot</p>
+                                </div>
                             </div>
                             <svg class="w-5 h-5 text-[#999] group-hover:text-[#0E0E0E] group-hover:translate-x-1 transition-all duration-300 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
@@ -40,9 +47,18 @@ export async function renderHome(container) {
                     <!-- Dining Table -->
                     <button id="btn-dining" class="group w-full bg-[#f5f5f5] text-[#0E0E0E] rounded-2xl px-6 py-5 text-left transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.98]">
                         <div class="flex items-center justify-between">
-                            <div>
-                                <h2 class="font-display text-xl mb-1">Dining Table</h2>
-                                <p class="text-[#666] text-sm">Reserve your table</p>
+                            <div class="flex items-center gap-4">
+                                <svg class="w-6 h-6 text-[#999] group-hover:text-[#0E0E0E] transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="8"/>
+                                    <path d="M3 12h1m16 0h1"/>
+                                    <path d="M5 2v6a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/>
+                                    <path d="M7 2v4"/>
+                                    <path d="M15 2v8.5a2.5 2.5 0 0 0 5 0V6a1 1 0 0 0-1-1h-1"/>
+                                </svg>
+                                <div>
+                                    <h2 class="font-display text-xl mb-1">Dining Table</h2>
+                                    <p class="text-[#666] text-sm">Reserve your table</p>
+                                </div>
                             </div>
                             <svg class="w-5 h-5 text-[#999] group-hover:text-[#0E0E0E] group-hover:translate-x-1 transition-all duration-300 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
