@@ -826,6 +826,17 @@ function renderReviewStep(content) {
 async function submitBooking(content) {
     const btn = document.getElementById('btn-confirm');
     const isDining = bookingState.section === 'dining';
+
+    // Build WhatsApp URL synchronously while we still have user gesture trust
+    let waUrl = null;
+    if (isDining) {
+        const waNumber = settings?.whatsapp_number?.replace(/[^0-9]/g, '');
+        if (waNumber) {
+            const waMsg = buildDiningWhatsApp(bookingState);
+            waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;
+        }
+    }
+
     btn.disabled = true;
     btn.innerHTML = `
         <div class="flex items-center justify-center gap-2">
@@ -865,10 +876,11 @@ async function submitBooking(content) {
 
         const data = await resp.json();
 
-        // For dining, open WhatsApp with pre-filled booking details
-        if (isDining) {
-            const waMsg = buildDiningWhatsApp(bookingState);
-            openWhatsApp(settings, waMsg);
+        // Open WhatsApp for dining — use location.href for mobile compatibility
+        if (waUrl) {
+            window.location.href = waUrl;
+            // Small delay to let the OS handle the deep link before navigating
+            await new Promise(r => setTimeout(r, 500));
         }
 
         // Navigate to confirmation
