@@ -974,13 +974,8 @@ function buildDiningWhatsApp(state) {
     const guests = state.partySize;
     const svc = state.service?.name || '';
 
-    let msg = `Ciao! I've just booked a table at DESCO:\n\n`;
-    msg += `Name: ${name}\n`;
-    msg += `Data: ${date}\n`;
-    if (svc) msg += `Service: ${svc}\n`;
-    msg += `Guests: ${guests}\n`;
-    if (time) msg += `Time: ${time}\n`;
-    msg += `\nI'm writing to confirm my attendance! I'd like to add details such as food intolerances or special requests: `;
-
+    let msg = `Ciao! Vorrei confermare la mia prenotazione e definire il menù che preferisco:\n\n`;
+    msg += `Nome: ${name}\n`;
+    msg += `Ospiti: ${guests}\n`;
     return msg;
 }
